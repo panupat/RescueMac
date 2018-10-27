@@ -1,2 +1,2 @@
 # RescueMac
-PythonLabyrinth
+Python, PyGame, Labyrinth
