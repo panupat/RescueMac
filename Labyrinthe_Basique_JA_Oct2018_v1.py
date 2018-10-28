@@ -22,7 +22,7 @@ laby = ["*8*************",
 availableCases =    [Position(1, 1), 
                     Position(2, 1), Position(2, 2), Position(2, 3), Position(2, 4), Position(2, 5), Position(2, 6), Position(2, 7), Position(2, 8),
                     Position(3, 4), Position(3, 6), Position(3, 8),
-                    Position(4, 6), Position(4, 8),
+                    Position(4, 1), Position(4, 2), Position(4, 3), Position(4, 4), Position(4, 6), Position(4, 8),
                     Position(5, 6), Position(5, 8),
                     Position(6, 1), Position(6, 2), Position(6, 3), Position(6, 4), Position(6, 5), Position(6, 6), Position(6, 8), 
                     Position(7, 1), 
@@ -67,28 +67,28 @@ while (perso_l!=9) or (perso_c!=8) :
     if a == "q":
         if laby[perso_l][perso_c-1] == "*" :
             print("vous ne pouvez pas passer!")
-        else:
+        elif laby[perso_l][perso_c-1] == " " :
             laby[perso_l]=remplacer(laby[perso_l],perso_c-1,"8")
             laby[perso_l]=remplacer(laby[perso_l],perso_c," ")
             perso_c=perso_c-1
     if a == "d":
         if laby[perso_l][perso_c+1] == "*" :
             print("vous ne pouvez pas passer!")
-        else:
+        elif laby[perso_l][perso_c+1] == " " :
             laby[perso_l]=remplacer(laby[perso_l],perso_c+1,"8")
             laby[perso_l]=remplacer(laby[perso_l],perso_c," ")
             perso_c=perso_c+1
     if a == "z":
         if laby[perso_l-1][perso_c] == "*" :
             print("vous ne pouvez pas passer!")
-        else:
+        elif laby[perso_l-1][perso_c] == " " :
             laby[perso_l-1]=remplacer(laby[perso_l-1],perso_c,"8")
             laby[perso_l]=remplacer(laby[perso_l],perso_c," ")
             perso_l=perso_l-1
     if a == "s":
         if laby[perso_l+1][perso_c] == "*" :
             print("vous ne pouvez pas passer!")
-        else:
+        elif laby[perso_l+1][perso_c] == " " :
             laby[perso_l+1]=remplacer(laby[perso_l+1],perso_c,"8")
             laby[perso_l]=remplacer(laby[perso_l],perso_c," ")
             perso_l=perso_l+1
