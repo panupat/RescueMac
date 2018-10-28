@@ -22,7 +22,6 @@ def buildAvailPositionList():
 	l = 0
 	for line in laby:
 		for x in range(0, len(line)):
-			print "in 2nd for"
 			if line[x] == " ":
 				positionList.append(Position(l, x))
 		l = l + 1
