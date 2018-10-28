@@ -20,6 +20,16 @@ def afficher(laby):
         print(ligne)
 
 afficher(laby)
+
+availableCases =    [Position(1, 1), 
+                    Position(2, 1), Position(2, 2), Position(2, 3), Position(2, 4), Position(2, 5), Position(2, 6), Position(2, 7), Position(2, 8),
+                    Position(3, 4), Position(3, 6), Position(3, 8),
+                    Position(4, 1), Position(4, 2), Position(4, 3), Position(4, 4), Position(4, 6), Position(4, 7),
+                    Position(5, 6), Position(5, 8),
+                    Position(6, 1), Position(6, 2), Position(6, 3), Position(6, 4), Position(6, 5), Position(6, 6), Position(6, 8), 
+                    Position(7, 1), 
+                    Position(8, 1), Position(8, 2), Position(8, 3), Position(8, 4), Position(8, 5), Position(8, 6), Position(8, 7), Position(8, 8),
+                    Position(9, 8)]
  
 
 
