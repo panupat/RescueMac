@@ -26,7 +26,7 @@ def remplacer(chaine,i,car):
     return s
  
 while (perso_l!=9) or (perso_c!=8) :
-    a = input("ou voulez vous aller:(gauche = q, droite = d, haut = z, bas = s)")
+    a = raw_input("ou voulez vous aller:(gauche = q, droite = d, haut = z, bas = s)")
     if a == "q":
         if laby[perso_l][perso_c-1] == "*" :
             print("vous ne pouvez pas passer!")
