@@ -51,7 +51,7 @@ def generateInGameObjets():
         availableCases.pop(index)
 
 def afficher(laby):
-    for ligne in laby[:len(laby)]:
+    for ligne in laby:
         print(ligne)
 
 generateInGameObjets()
