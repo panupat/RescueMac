@@ -34,7 +34,7 @@ class LabyManager:
 			indexOfLastChar = len(line) - 1
 			if line[indexOfLastChar] == '\n':
 				indexOfCurrentLine = cls.LABY.index(line)
-				line = replace(line, indexOfLastChar, '')
+				line = LabyManager.replace(line, indexOfLastChar, '')
 				cls.LABY[indexOfCurrentLine] = line
 
 
@@ -43,7 +43,7 @@ class LabyManager:
 		with open('./LABY02.txt') as file:
 			cls.LABY = file.readlines()
 		file.close()
-		removeEndOfLineChar()
+		cls.removeEndOfLineChar()
 
 
 	@classmethod
@@ -57,7 +57,7 @@ class LabyManager:
 
 	@classmethod
 	def initGame(cls):
-		cls.loadLABY()	
+		cls.loadLABY()
 		cls.AVAILABLE_CASES = cls.buildAvailPositionList()
 		cls.generateInGameObjets()
 		cls.PERSO_INIT_POSITION = Position.Position(0, 1)
@@ -65,9 +65,9 @@ class LabyManager:
 
 
 	@classmethod
-	def updatePersoPositionInLABY(cls, oldPos, newPosition):
-		cls.LABY[oldPos.line] = replace(cls.LABY[oldPos.line], oldPos.column, " ")
-		cls.LABY[newPosition.line] = replace(cls.LABY[newPosition.line], newPosition.column, "8")
+	def updatePersoPositionInLaby(cls, oldPos, newPosition):
+		cls.LABY[oldPos.line] = LabyManager.replace(cls.LABY[oldPos.line], oldPos.column, " ")
+		cls.LABY[newPosition.line] = LabyManager.replace(cls.LABY[newPosition.line], newPosition.column, "8")
 
 
 	@classmethod
@@ -78,11 +78,11 @@ class LabyManager:
 			if index < availableCasesCount:
 				position = cls.AVAILABLE_CASES[index]
 				if x == 1:
-					cls.LABY[position.line] = replace(cls.LABY[position.line], position.column, "A") #A=AIGUILLE
+					cls.LABY[position.line] = LabyManager.replace(cls.LABY[position.line], position.column, "A") #A=AIGUILLE
 				elif x == 2:
-					cls.LABY[position.line] = replace(cls.LABY[position.line], position.column, "E") #E=ETHER
+					cls.LABY[position.line] = LabyManager.replace(cls.LABY[position.line], position.column, "E") #E=ETHER
 				else:
-					cls.LABY[position.line] = replace(cls.LABY[position.line], position.column, "T") #T=TUBE EN PLASTIQUE
+					cls.LABY[position.line] = LabyManager.replace(cls.LABY[position.line], position.column, "T") #T=TUBE EN PLASTIQUE
 				cls.AVAILABLE_CASES.pop(index)
 
 	@classmethod

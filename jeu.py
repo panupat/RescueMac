@@ -1,6 +1,6 @@
 import perso as Perso
 import position as Position
-import labyManager as lm
+from labyManager import LabyManager
 from os import system, name
 from time import sleep
 
@@ -46,19 +46,19 @@ class GameController:
 		pass
 
 	@classmethod
-	def gameLoop(cls, labyManager, perso):
+	def gameLoop(cls, perso):
 		win = False
-		while (not(perso.pos == labyManager.exitPosition) and perso.alive):
-			labyManager.displayLaby()
+		while (not(perso.pos == LabyManager.EXIT_POSITION) and perso.alive):
+			LabyManager.displayLaby()
 			a = raw_input("ou voulez vous aller: " + cls.explanationString())
 			if a == cls.LEFTKEY:
-				perso.goLeft(labyManager.laby)
+				perso.goLeft(LabyManager.LABY)
 			elif a == cls.RIGHTKEY:
-				perso.goRight(labyManager.laby)
+				perso.goRight(LabyManager.LABY)
 			elif a == cls.UPKEY:
-				perso.goUp(labyManager.laby)
+				perso.goUp(LabyManager.LABY)
 			elif a == cls.DOWNKEY:
-				perso.goDown(labyManager.laby)
+				perso.goDown(LabyManager.LABY)
 			cls.clear()
 		win = perso.alive
 		if not win:
@@ -74,12 +74,12 @@ def main():
 	gameController.clear()
 	gameController.selectKeyboard()
 	sleep(2)
-	labyManager = lm.LabyManager()
+	labyManager = LabyManager()
 	win = False
 	while(not win):
 		gameController.clear()
 		labyManager.initGame()
-		perso = Perso.Perso(labyManager.persoInitPosition)
+		perso = Perso.Perso(labyManager.PERSO_INIT_POSITION)
 		win = gameController.gameLoop(perso)
 	if win:
 		labyManager.displayLaby()
