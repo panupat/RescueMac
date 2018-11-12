@@ -4,71 +4,82 @@ import labyManager as lm
 from os import system, name
 from time import sleep
 
-leftKey = "a"
-rightKey = "d"
-upKey = "w"
-downKey = "s"
+class GameController:
+	LEFTKEY = "a"
+	RIGHTKEY = "d"
+	UPKEY = "w"
+	DOWNKEY = "s"
+	SELECTED_KB = "q"
 
-def clear():
-	_ = system('clear')
-
-
-def selectKeyboard():
-	print("Appuyez sur Q si vous avez un clavier QWERTY")
-	print("Appuyez sur A si vous avez un clavier AZERTY")
-	selectedKey = raw_input()
-	setKey(selectedKey)
+	@staticmethod
+	def clear():
+		_ = system('clear')
 
 
-def setKey(selectedKey):
-	if selectedKey == "Q" or selectedKey == "q":
-		leftKey = "a"
-		rightKey = "d"
-		upKey = "w"
-		downKey = "s"
-		print("Vous avez choisi le clavier QWERTY")
-	elif selectedKey == "A" or selectedKey == "a":
-		leftKey = "q"
-		rightKey = "d"
-		upKey = "z"
-		downKey = "s"
-		print("Vous avez choisi le clavier AZERTY")
-	else:
-		print("Clavier par defaut selectionne (QWERTY)")
+	@staticmethod
+	def selectKeyboard():
+		print("Appuyez sur Q si vous avez un clavier QWERTY")
+		print("Appuyez sur A si vous avez un clavier AZERTY")
+		selectedKey = raw_input()
+		GameController.setKey(selectedKey)
 
-def gameLoop(perso):
-	win = False
-	while (not(perso.pos == lm.exitPosition) and perso.alive):
-		lm.displayLaby()
-		a = raw_input("ou voulez vous aller:(gauche = q, droite = d, haut = z, bas = s)")
-		if a == leftKey:
-			perso.goLeft(lm.laby)
-		elif a == rightKey:
-			perso.goRight(lm.laby)
-		elif a == upKey:
-			perso.goUp(lm.laby)
-		elif a == downKey:
-			perso.goDown(lm.laby)
-		clear()
-	win = perso.alive
-	if not win:
-		clear()
-		print("You are DEAD")
-		print("Press enter to continue.")
-		_ = raw_input()
-	return win
+
+	@classmethod
+	def setKey(cls, selectedKey):
+		cls.SELECTED_KB = selectedKey
+		if selectedKey == "A" or selectedKey == "a":
+			cls.LEFTKEY = "q"
+			cls.RIGHTKEY = "d"
+			cls.UPKEY = "z"
+			cls.DOWNKEY = "s"
+			print("Vous avez choisi le clavier AZERTY")
+		else:
+			print("Vous avez choisi le clavier QWERTY")
+
+
+	@classmethod
+	def explanationString(cls):
+		if cls.SELECTED_KB == "A" or cls.SELECTED_KB == "a":
+			return "(gauche = q, droite = d, haut = z, bas = s)"
+		else:
+			return "(left = a, right = d, up = w, down = s)"
+		pass
+
+	@classmethod
+	def gameLoop(cls, perso):
+		win = False
+		while (not(perso.pos == lm.exitPosition) and perso.alive):
+			lm.displayLaby()
+			a = raw_input("ou voulez vous aller: " + cls.explanationString())
+			if a == cls.LEFTKEY:
+				perso.goLeft(lm.laby)
+			elif a == cls.RIGHTKEY:
+				perso.goRight(lm.laby)
+			elif a == cls.UPKEY:
+				perso.goUp(lm.laby)
+			elif a == cls.DOWNKEY:
+				perso.goDown(lm.laby)
+			cls.clear()
+		win = perso.alive
+		if not win:
+			cls.clear()
+			print("You are DEAD")
+			print("Press enter to continue.")
+			_ = raw_input()
+		return win
 
 
 def main():
-	clear()
-	selectKeyboard()
+	gameController = GameController()
+	gameController.clear()
+	gameController.selectKeyboard()
 	sleep(2)
 	win = False
 	while(not win):
-		clear()
+		gameController.clear()
 		lm.initGame()
 		perso = Perso.Perso(lm.persoInitPosition)
-		win = gameLoop(perso)
+		win = gameController.gameLoop(perso)
 	if win:
 		lm.displayLaby()
 		print("Congrats ! You are out alive !")
