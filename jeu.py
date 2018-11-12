@@ -46,19 +46,19 @@ class GameController:
 		pass
 
 	@classmethod
-	def gameLoop(cls, perso):
+	def gameLoop(cls, labyManager, perso):
 		win = False
-		while (not(perso.pos == lm.exitPosition) and perso.alive):
-			lm.displayLaby()
+		while (not(perso.pos == labyManager.exitPosition) and perso.alive):
+			labyManager.displayLaby()
 			a = raw_input("ou voulez vous aller: " + cls.explanationString())
 			if a == cls.LEFTKEY:
-				perso.goLeft(lm.laby)
+				perso.goLeft(labyManager.laby)
 			elif a == cls.RIGHTKEY:
-				perso.goRight(lm.laby)
+				perso.goRight(labyManager.laby)
 			elif a == cls.UPKEY:
-				perso.goUp(lm.laby)
+				perso.goUp(labyManager.laby)
 			elif a == cls.DOWNKEY:
-				perso.goDown(lm.laby)
+				perso.goDown(labyManager.laby)
 			cls.clear()
 		win = perso.alive
 		if not win:
@@ -74,14 +74,15 @@ def main():
 	gameController.clear()
 	gameController.selectKeyboard()
 	sleep(2)
+	labyManager = lm.LabyManager()
 	win = False
 	while(not win):
 		gameController.clear()
-		lm.initGame()
-		perso = Perso.Perso(lm.persoInitPosition)
+		labyManager.initGame()
+		perso = Perso.Perso(labyManager.persoInitPosition)
 		win = gameController.gameLoop(perso)
 	if win:
-		lm.displayLaby()
+		labyManager.displayLaby()
 		print("Congrats ! You are out alive !")
 		
 
