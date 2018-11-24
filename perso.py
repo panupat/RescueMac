@@ -1,13 +1,17 @@
+import pygame
 import position as Position
 from labyManager import LabyManager
+from pygame.locals import * 
+from constantes import *
 
 class Perso:
-	def __init__(self, pos, hasEther = False, hasTube = False, hasNeedle = False, alive = True):
+	def __init__(self, pos, hasEther=False, hasTube=False, hasNeedle=False, alive=True):
 		self.pos = pos
 		self.alive = alive
 		self.hasEther = hasEther
 		self.hasTube = hasTube
 		self.hasNeedle = hasNeedle
+
 
 
 	def __str__(self):
@@ -19,58 +23,59 @@ class Perso:
 		return description
 
 
-
-	def goLeft(self, laby):
+	def goLeft(self, labyManager):
 		goingToPos = Position.Position(self.pos.line, self.pos.column - 1)
-		self.willStepOnObject(goingToPos)
-		if LabyManager.charAtPosition(goingToPos) != "*" and self.pos.column > 0:
-			LabyManager.updatePersoPositionInLaby(self.pos, goingToPos)
+		self.willStepOnObject(goingToPos, labyManager)
+		if labyManager.charAtPosition(goingToPos) != "*" and self.pos.column > 0:
+			labyManager.updatePersoPositionInLaby(self.pos, goingToPos)
 			self.pos = goingToPos
 		else:
-			LabyManager.showWarning()
+			pass
     	
 
-	def goRight(self, laby):
+	def goRight(self, labyManager):
 		goingToPos = Position.Position(self.pos.line, self.pos.column + 1)
-		self.willStepOnObject(goingToPos)
-		if LabyManager.charAtPosition(goingToPos) != "*" and self.pos.column < len(laby[self.pos.line]) - 1:
-			LabyManager.updatePersoPositionInLaby(self.pos, goingToPos)
+		self.willStepOnObject(goingToPos, labyManager)
+		if labyManager.charAtPosition(goingToPos) != "*" and self.pos.column < len(labyManager.laby[self.pos.line]) - 1:
+			labyManager.updatePersoPositionInLaby(self.pos, goingToPos)
 			self.pos = goingToPos
 		else:
-			LabyManager.showWarning()
+			pass
     	
 
-	def goUp(self, laby):
+	def goUp(self, labyManager):
 		goingToPos = Position.Position(self.pos.line - 1, self.pos.column)
-		self.willStepOnObject(goingToPos)
-		if LabyManager.charAtPosition(goingToPos) != "*" and self.pos.line > 0:
-			LabyManager.updatePersoPositionInLaby(self.pos, goingToPos)
+		self.willStepOnObject(goingToPos, labyManager)
+		if labyManager.charAtPosition(goingToPos) != "*" and self.pos.line > 0:
+			labyManager.updatePersoPositionInLaby(self.pos, goingToPos)
 			self.pos = goingToPos
 		else:
-			LabyManager.showWarning()
+			pass
     	
 
-	def goDown(self, laby):
+	def goDown(self, labyManager):
 		goingToPos = Position.Position(self.pos.line + 1, self.pos.column)
-		self.willStepOnObject(goingToPos)
-		if LabyManager.charAtPosition(goingToPos) != "*" and self.pos.line < len(laby) - 1:
-			LabyManager.updatePersoPositionInLaby(self.pos, goingToPos)
+		self.willStepOnObject(goingToPos, labyManager)
+		if labyManager.charAtPosition(goingToPos) != "*" and self.pos.line < len(labyManager.laby) - 1:
+			labyManager.updatePersoPositionInLaby(self.pos, goingToPos)
 			self.pos = goingToPos
 		else:
-			LabyManager.showWarning()
+			pass
 
-
-	def willStepOnObject(self, pos):
-		if LabyManager.charAtPosition(pos) == 'A':
+	def willStepOnObject(self, pos, labyManager):
+		if labyManager.charAtPosition(self.pos) == 'N':
 			self.hasNeedle = True
-		elif LabyManager.charAtPosition(pos) == 'E':
+		elif labyManager.charAtPosition(self.pos) == 'E':
 			self.hasEther = True
-		elif LabyManager.charAtPosition(pos) == 'T':
+		elif labyManager.charAtPosition(self.pos) == 'T':
 			self.hasTube = True
-		elif LabyManager.charAtPosition(pos) == 'X':
+		elif labyManager.charAtPosition(self.pos) == 'X':
 			if not self.hasAllObjects():
 				self.alive = False
-
+	
 
 	def hasAllObjects(self):
 		return self.hasNeedle and self.hasTube and self.hasEther
+
+
+	
