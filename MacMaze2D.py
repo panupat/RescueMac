@@ -7,8 +7,9 @@ from pygame.locals import *
 from constantes import*
 from time import sleep
 
+decision_list = [False, True]
 
-def gameLoop(perso):
+def gameLoop(perso, lm, shadow):
     global decision_list
     playloop = True
     win = False
@@ -88,38 +89,36 @@ def gameLoop(perso):
                         sleep(2)
                         flag = 0
 
-    return decision_list
-        
 
-######FONCTION PRINCIPALE##############
-pygame.init()
-shadow = pygame.display.set_mode((cote_fenetre, cote_fenetre))
-playloop = True
-win = False
-decision_list = [win, playloop]
-lm = LabyManager()
-while not decision_list[0] and decision_list[1]:
-    """Récupération du fichier texte laby nettoyé"""
-    lm.initializeGame()
-    perso = Perso.Perso(lm.initPosition)
-    lm.displayLaby(shadow)
-    """affiche l'écran avec les éléments du blit dans l'ordre du code"""
-    pygame.display.set_caption('MacGyver Maze')
-    pygame.display.flip()
-    pygame.key.set_repeat(400,30) 
-    win = gameLoop(perso)
-if decision_list[0] and decision_list[1]:
-    lm.displayLaby(shadow)
-    pygame.display.set_caption('MacGyver win')
-    lm.message_display("Congrats ! You are out alive !", shadow)
-    pygame.display.flip()
-    sleep(2)
-elif decision_list[0] and not decision_list[1]:
-    lm.displayLaby(shadow)
-    pygame.display.set_caption('MacGyver win')
-    lm.message_display("Thanks for playing! See you soon!", shadow)
-    pygame.display.flip()
-    sleep(2)
 
-    
+def main():
+    pygame.init()
+    shadow = pygame.display.set_mode((cote_fenetre, cote_fenetre))
 
+    lm = LabyManager()
+    while not decision_list[0] and decision_list[1]:
+        """Récupération du fichier texte laby nettoyé"""
+        lm.initializeGame()
+        perso = Perso.Perso(lm.initPosition)
+        lm.displayLaby(shadow)
+        """affiche l'écran avec les éléments du blit dans l'ordre du code"""
+        pygame.display.set_caption('MacGyver Maze')
+        pygame.display.flip()
+        pygame.key.set_repeat(400, 30)
+        gameLoop(perso, lm, shadow)
+    if decision_list[0] and decision_list[1]:
+        lm.displayLaby(shadow)
+        pygame.display.set_caption('MacGyver win')
+        lm.message_display("Congrats ! You are out alive !", shadow)
+        pygame.display.flip()
+        sleep(2)
+    elif decision_list[0] and not decision_list[1]:
+        lm.displayLaby(shadow)
+        pygame.display.set_caption('MacGyver win')
+        lm.message_display("Thanks for playing! See you soon!", shadow)
+        pygame.display.flip()
+        sleep(2)
+
+
+if __name__ == "__main__":
+    main()
