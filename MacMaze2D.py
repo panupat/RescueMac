@@ -26,7 +26,7 @@ def message_display(text):
     screen.blit(TextSurf, TextRect)
     pygame.display.update()
 
-def confirmDialog(text):
+def confirm_dialog(text):
     screen.fill(BLACK)
     message_display(text)
     pygame.display.update()
@@ -52,7 +52,7 @@ def wait_for_key_pressed():
                 isRunning = False
 
 
-def quitGame():
+def quit_game():
     screen.fill(BLACK)
     message_display("Thank you for playing Mac Maze. See you soon!")
     wait_for_key_pressed()
@@ -107,24 +107,24 @@ def handle_game_end():
     global continuePlaying
 
     if not continuePlaying:
-        confirmed = confirmDialog("Are you sure you want to quit? (y / n)")
+        confirmed = confirm_dialog("Are you sure you want to quit? (y / n)")
         if confirmed:
-            quitGame()
+            quit_game()
         else:
             start_game()
     else:
         if win:
-            confirmed = confirmDialog("Congratulations! You won! Play again? (y / n)")
+            confirmed = confirm_dialog("Congratulations! You won! Play again? (y / n)")
             if confirmed:
                 start_game()
             else:
-                quitGame()
+                quit_game()
         else:
-            confirmed = confirmDialog("You are dead, try again? (y / n)")
+            confirmed = confirm_dialog("You are dead, try again? (y / n)")
             if confirmed:
                 start_game()
             else:
-                quitGame()
+                quit_game()
 
 def main():
     start_game()
