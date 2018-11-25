@@ -63,13 +63,13 @@ class Perso:
 			pass
 
 	def willStepOnObject(self, pos, labyManager):
-		if labyManager.charAtPosition(self.pos) == 'N':
+		if labyManager.charAtPosition(pos) == 'N':
 			self.hasNeedle = True
-		elif labyManager.charAtPosition(self.pos) == 'E':
+		elif labyManager.charAtPosition(pos) == 'E':
 			self.hasEther = True
-		elif labyManager.charAtPosition(self.pos) == 'T':
+		elif labyManager.charAtPosition(pos) == 'T':
 			self.hasTube = True
-		elif labyManager.charAtPosition(self.pos) == 'X':
+		elif labyManager.charAtPosition(pos) == 'X':
 			if not self.hasAllObjects():
 				self.alive = False
 	

@@ -22,7 +22,7 @@ class LabyManager:
 
 
 	def loadLABY(self):
-		with open('./maps/laby02.txt') as file:
+		with open('./maps/laby03.txt') as file:
 			self.laby = file.readlines()
 		file.close()
 		self.removeEndOfLineChar()
@@ -148,9 +148,9 @@ class LabyManager:
 	
 		
 	def message_display(self, text, shadow):
-		myfont = pygame.font.SysFont("Comic Sans MS",30)
-		label = myfont.render(text, 1, (0,0,0))
-		shadow.blit(label,(50, 215))
+		myfont = pygame.font.SysFont("Comic Sans MS", 30)
+		label = myfont.render(text, 1, (0, 255, 0))
+		shadow.blit(label, (50, 215))
 
 
 	

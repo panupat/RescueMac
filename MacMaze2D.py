@@ -3,121 +3,129 @@ import position as Position
 import perso as Perso
 from random import randint
 from labyManager import LabyManager
-from pygame.locals import *
 from constantes import*
 from time import sleep
 
-decision_list = [False, True]
+continuePlaying = True
+gameEnded = False
+win = False
+pygame.init()
+screen = pygame.display.set_mode((cote_fenetre, cote_fenetre))
 
-def gameLoop(perso, lm, shadow):
-    global decision_list
-    playloop = True
-    win = False
-    decision_list = [win, playloop]
+def text_objects(text, font):
+    textSurface = font.render(text, True, WHITE)
+    return textSurface, textSurface.get_rect()
 
-    while not (perso.pos == lm.exitPosition) and perso.alive and decision_list[1]:
-        #decision_list = [win, playloop]
-        lm.displayLaby(shadow)
-        pygame.display.set_caption("MacGyver have: " + lm.nbInGameObjets() + "/3 objects. Use arrows to move")
-        #lm.message_display("Utilisez les flêches du clavier pour vous déplacer!", shadow)
-        pygame.display.flip()
-        pygame.key.set_repeat(400,30)
+
+def message_display(text):
+    font = pygame.font.Font('freesansbold.ttf', 15)
+    TextSurf, TextRect = text_objects(text, font)
+    TextRect.center = ((cote_fenetre / 2),(cote_fenetre / 2))
+    screen.blit(TextSurf, TextRect)
+    pygame.display.update()
+
+def confirmDialog(text):
+    screen.fill(BLACK)
+    message_display(text)
+    pygame.display.update()
+    isRunning = True
+    answer = False
+    while isRunning:
         for event in pygame.event.get():
-            if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-                decision_list[1] = False
-            elif event.type == KEYDOWN:
-                if event.key == K_LEFT :
+            if event.type == pygame.QUIT:
+                isRunning = False
+            elif event.type == pygame.KEYDOWN:
+                isRunning = False
+                if event.key == pygame.K_y:
+                    answer = True
+    return answer
+
+def wait_for_key_pressed():
+    isRunning = True
+    while isRunning:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                isRunning = False
+            elif event.type == pygame.KEYDOWN:
+                isRunning = False
+
+
+def quitGame():
+    screen.fill(BLACK)
+    message_display("Thank you for playing Mac Maze. See you soon!")
+    wait_for_key_pressed()
+    screen.fill(BLACK)
+    message_display("Press any key to quit.")
+    wait_for_key_pressed()
+    pygame.quit()
+
+
+def game_loop():
+    global win
+    global continuePlaying
+    global gameEnded
+    continuePlaying = True
+    win = False
+    lm = LabyManager()
+    lm.initializeGame()
+    perso = Perso.Perso(lm.initPosition)
+    lm.displayLaby(screen)
+    while not (perso.pos == lm.exitPosition) and perso.alive and continuePlaying:
+        lm.displayLaby(screen)
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                continuePlaying = False
+                break
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT :
                     perso.goLeft(lm)
-                elif event.key == K_RIGHT:
+                elif event.key == pygame.K_RIGHT:
                     perso.goRight(lm)
-                elif event.key == K_UP:
+                elif event.key == pygame.K_UP:
                     perso.goUp(lm)
-                elif event.key == K_DOWN:
+                elif event.key == pygame.K_DOWN:
                     perso.goDown(lm)
-        decision_list[0] = perso.alive #=TRUE EXCEPT IF GUARD KILL MAC
+                elif event.key == pygame.K_ESCAPE:
+                    continuePlaying = False
+                    break
+    win = perso.alive and perso.hasAllObjects()
+    gameEnded = True
 
-    if not decision_list[0] and decision_list[1]:
-        lm.message_display("You are DEAD, try again!", shadow)
-        pygame.display.flip()
-        sleep(3)
-
-    elif decision_list[0] and not decision_list[1]:
-        lm.message_display("Are you LEAVING?! Tape y or n", shadow)
-        pygame.display.flip()
-        flag = 1
-        while flag:
-            for event in pygame.event.get():
-                if event.type == KEYDOWN:
-                    if event.key == K_y:
-                        decision_list[0] = True
-                        decision_list[1] = False
-                        lm.displayLaby(shadow)
-                        lm.message_display("yes, OK! Thanks", shadow)
-                        pygame.display.flip()
-                        sleep(2)
-                        flag = 0
-                    elif event.key == K_n:
-                        decision_list[0] = False
-                        decision_list[1] = True
-                        lm.displayLaby(shadow)
-                        lm.message_display("no, OK! Play again", shadow)
-                        pygame.display.flip()
-                        sleep(2)
-                        flag = 0
-
-    elif decision_list[0] and decision_list[1]:
-        lm.message_display("Mac put it DOWN! Go OUT? Tape y or n", shadow)
-        pygame.display.flip()
-        flag = 1
-        while flag:
-            for event in pygame.event.get():
-                if event.type == KEYDOWN:
-                    if event.key == K_y:
-                        decision_list[0] = True
-                        decision_list[1] = True
-                        lm.displayLaby(shadow)
-                        lm.message_display("yes, OK!", shadow)
-                        pygame.display.flip()
-                        sleep(2)
-                        flag = 0
-                    elif event.key == K_n:
-                        decision_list[0] = False
-                        decision_list[1] = True
-                        lm.displayLaby(shadow)
-                        lm.message_display("no, OK!", shadow)
-                        pygame.display.flip()
-                        sleep(2)
-                        flag = 0
+def start_game():
+    global gameEnded
+    gameEnded = False
+    while not gameEnded:
+        game_loop()
+    handle_game_end()
 
 
+def handle_game_end():
+    global win
+    global continuePlaying
+
+    if not continuePlaying:
+        confirmed = confirmDialog("Are you sure you want to quit? (y / n)")
+        if confirmed:
+            quitGame()
+        else:
+            start_game()
+    else:
+        if win:
+            confirmed = confirmDialog("Congratulations! You won! Play again? (y / n)")
+            if confirmed:
+                start_game()
+            else:
+                quitGame()
+        else:
+            confirmed = confirmDialog("You are dead, try again? (y / n)")
+            if confirmed:
+                start_game()
+            else:
+                quitGame()
 
 def main():
-    pygame.init()
-    shadow = pygame.display.set_mode((cote_fenetre, cote_fenetre))
-
-    lm = LabyManager()
-    while not decision_list[0] and decision_list[1]:
-        """Récupération du fichier texte laby nettoyé"""
-        lm.initializeGame()
-        perso = Perso.Perso(lm.initPosition)
-        lm.displayLaby(shadow)
-        """affiche l'écran avec les éléments du blit dans l'ordre du code"""
-        pygame.display.set_caption('MacGyver Maze')
-        pygame.display.flip()
-        pygame.key.set_repeat(400, 30)
-        gameLoop(perso, lm, shadow)
-    if decision_list[0] and decision_list[1]:
-        lm.displayLaby(shadow)
-        pygame.display.set_caption('MacGyver win')
-        lm.message_display("Congrats ! You are out alive !", shadow)
-        pygame.display.flip()
-        sleep(2)
-    elif decision_list[0] and not decision_list[1]:
-        lm.displayLaby(shadow)
-        pygame.display.set_caption('MacGyver win')
-        lm.message_display("Thanks for playing! See you soon!", shadow)
-        pygame.display.flip()
-        sleep(2)
+    start_game()
 
 
 if __name__ == "__main__":
