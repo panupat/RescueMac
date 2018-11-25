@@ -1,8 +1,7 @@
-import pygame
 import position as Position
 from labyManager import LabyManager
-from pygame.locals import * 
 from constantes import *
+
 
 class Perso:
 	def __init__(self, pos, hasEther=False, hasTube=False, hasNeedle=False, alive=True):

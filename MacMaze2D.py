@@ -4,7 +4,7 @@ import perso as Perso
 from random import randint
 from labyManager import LabyManager
 from constantes import*
-from time import sleep
+
 
 continuePlaying = True
 gameEnded = False

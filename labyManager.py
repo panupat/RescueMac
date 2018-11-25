@@ -1,7 +1,6 @@
 from random import randint
 import position as Position
 import pygame
-from pygame.locals import *
 from constantes import*
 import perso as Perso
 
